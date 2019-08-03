@@ -13,7 +13,7 @@ ImageFile.LOAD_TRUNCATED_IMAGES = True
 
 
 class COCOSegmentation(Dataset):
-    NUM_CLASSES = 21
+    NUM_CLASSES = 2
     CAT_LIST = [0, 5, 2, 16, 9, 44, 6, 3, 17, 62, 21, 67, 18, 19, 4,
         1, 64, 20, 63, 7, 72]
 
@@ -23,8 +23,8 @@ class COCOSegmentation(Dataset):
                  split='train',
                  year='2017'):
         super().__init__()
-        ann_file = os.path.join(base_dir, 'annotations/instances_{}{}.json'.format(split, year))
-        ids_file = os.path.join(base_dir, 'annotations/{}_ids_{}.pth'.format(split, year))
+        ann_file = os.path.join(base_dir, 'annotations.json'.format(split, year))
+        ids_file = os.path.join(base_dir, '{}_ids_{}.pth'.format(split, year))
         self.img_dir = os.path.join(base_dir, 'images/{}{}'.format(split, year))
         self.split = split
         self.coco = COCO(ann_file)

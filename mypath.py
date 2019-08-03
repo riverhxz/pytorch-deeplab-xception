@@ -8,7 +8,7 @@ class Path(object):
         elif dataset == 'cityscapes':
             return '/path/to/datasets/cityscapes/'     # foler that contains leftImg8bit/
         elif dataset == 'coco':
-            return '/path/to/datasets/coco/'
+            return '/Users/huanghaihun/labelme/examples/instance_segmentation/board_seg_coco'
         else:
             print('Dataset {} not available.'.format(dataset))
             raise NotImplementedError
