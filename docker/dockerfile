@@ -1,0 +1,10 @@
+FROM ufoym/deepo:pytorch-py36-cu80
+
+COPY ./sources.list /etc/apt/
+RUN pip install -i https://pypi.tuna.tsinghua.edu.cn/simple pip -U \
+    && pip config set global.index-url https://pypi.tuna.tsinghua.edu.cn/simple \
+    && pip install matplotlib pillow tensorboardX tqdm pycocotools \
+    && pip install torch==0.4.1 -f https://download.pytorch.org/whl/cu80/stable \
+    && pip install -U protobuf \
+    && apt-get update \
+    && apt install python3.6-tk -y
