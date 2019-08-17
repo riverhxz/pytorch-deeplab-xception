@@ -4,6 +4,26 @@ import numpy as np
 
 from PIL import Image, ImageOps, ImageFilter
 
+
+class NormalizeImg(object):
+    """Normalize a tensor image with mean and standard deviation.
+    Args:
+        mean (tuple): means for each channel.
+        std (tuple): standard deviations for each channel.
+    """
+    def __init__(self, mean=(0., 0., 0.), std=(1., 1., 1.)):
+        self.mean = mean
+        self.std = std
+
+    def __call__(self, sample):
+        img = sample
+        img = np.array(img).astype(np.float32)
+        img /= 255.0
+        img -= self.mean
+        img /= self.std
+
+        return img
+
 class Normalize(object):
     """Normalize a tensor image with mean and standard deviation.
     Args:
@@ -163,3 +183,36 @@ class FixedResize(object):
 
         return {'image': img,
                 'label': mask}
+
+
+class FixedResizeImg(object):
+    def __init__(self, size):
+        self.size = (size, size)  # size: (h, w)
+
+    def __call__(self, sample):
+
+        img = sample.resize(self.size, Image.BILINEAR)
+
+        return img
+
+
+class FixScaleCropImg(object):
+    def __init__(self, crop_size):
+        self.crop_size = crop_size
+
+    def __call__(self, img):
+        w, h = img.size
+        if w > h:
+            oh = self.crop_size
+            ow = int(1.0 * w * oh / h)
+        else:
+            ow = self.crop_size
+            oh = int(1.0 * h * ow / w)
+        img = img.resize((ow, oh), Image.BILINEAR)
+        # center crop
+        w, h = img.size
+        x1 = int(round((w - self.crop_size) / 2.))
+        y1 = int(round((h - self.crop_size) / 2.))
+        img = img.crop((x1, y1, x1 + self.crop_size, y1 + self.crop_size))
+
+        return img
