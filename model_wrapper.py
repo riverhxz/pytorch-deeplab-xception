@@ -52,7 +52,7 @@ def main():
     result = model.predict_file("data/coco/train/JPEGImages/1562566287720.jpg")
     import numpy as np
     mask = np.squeeze(result.cpu().detach().numpy())
-    mask = mask.transpose([1,2,0])[..., 0]
+    mask = mask.transpose([1,2,0])[..., 1]
     output = PIL.Image.fromarray(mask.astype(np.uint8) * 255)
     output.save("output.png")
 
